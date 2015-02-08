@@ -53,6 +53,7 @@ void Board::copyFrom(const Board& other)
 		for (size_t j = 0; j < width; j++)
 		{
 			board[i][j] = other.board[i][j];
+			board[i][j].setOwner(this);
 		}
 }
 
@@ -223,4 +224,12 @@ void Board::print() const
 		}
 		std::cout << std::endl;
 	}
+}
+
+Cell* Board::getCellAt(size_t row, size_t column) const
+{
+	if (row >= height || column >= width)
+		return NULL;
+
+	return &board[row][column];
 }

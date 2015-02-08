@@ -2,9 +2,9 @@
 
 Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL), owner(NULL) {}
 
-Cell::Cell(Board* owner,char symbol, size_t rowPosition, size_t columnPosition) :
-symbol(symbol), pos(rowPosition, columnPosition),gCost(0), hCost(0), fCost(0), 
-parent(NULL), owner(owner) {}
+Cell::Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition) :
+owner(owner), symbol(symbol), pos(rowPosition, columnPosition), gCost(0), hCost(0), fCost(0),
+parent(NULL) {}
 
 
 Cell::Cell(const Cell& other)
@@ -26,8 +26,28 @@ void Cell::copyFrom(const Cell& other)
 	gCost = other.gCost;
 	hCost = other.hCost;
 	fCost = other.fCost;
-	
+	owner = other.owner;
 	// ? is it?
 	parent = other.parent;
 }
 
+
+Cell* Cell::getLeftNeighbour() const
+{
+	return owner->getCellAt(pos.rowPosition, pos.columnPosition - 1);
+}
+
+Cell* Cell::getRightNeighbour() const
+{
+	return owner->getCellAt(pos.rowPosition, pos.columnPosition + 1);
+}
+
+Cell* Cell::getUpperNeighbour() const
+{
+	return owner->getCellAt(pos.rowPosition - 1, pos.columnPosition);
+}
+
+Cell* Cell::getBottomNeighbour() const
+{
+	return owner->getCellAt(pos.rowPosition + 1, pos.columnPosition);
+}

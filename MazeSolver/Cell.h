@@ -88,4 +88,22 @@ public:
 
 	// sets cell parent
 	void setParent(Cell* parent) { this->parent = parent; }
-};
+
+	// gets left neighbour if there is any else returns null pointer
+	Cell* getLeftNeighbour() const;
+
+	// gets right neighbour if there is any else returns null pointer
+	Cell* getRightNeighbour() const;
+
+	// gets upper neighbour if there is any else returns null pointer
+	Cell* getUpperNeighbour() const;
+
+	// gets bottom neighbour if there is any else returns null pointer
+	Cell* getBottomNeighbour() const;
+
+	// gets owner of the cell
+	Board* getOwner() const { return owner; }
+
+	// sets owner of the cell
+	void setOwner(Board* owner) { this->owner = owner; }
+ };

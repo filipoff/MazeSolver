@@ -7,5 +7,6 @@ int main()
 	Board test;
 	test.loadFromFileName("testMap.txt");
 	test.print();
+
 	return 0;
 }
