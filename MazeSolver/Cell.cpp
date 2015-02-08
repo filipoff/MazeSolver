@@ -1,15 +1,9 @@
 #include "Cell.h"
 
-Cell::Cell()
-{
-	symbol = 0;
-	row = 0;
-	column = 0;
-}
+Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL) {}
 
-Cell::Cell(char symbol, int row, int column) :
-symbol(symbol), row(row), column(column)
-{}
+Cell::Cell(char symbol, size_t rowPosition, size_t columnPosition) : symbol(symbol),
+pos(rowPosition, columnPosition),gCost(0), hCost(0), fCost(0), parent(NULL) {}
 
 
 Cell::Cell(const Cell& other)
@@ -27,36 +21,12 @@ Cell& Cell::operator=(const Cell& other)
 void Cell::copyFrom(const Cell& other)
 {
 	symbol = other.symbol;
-	row = other.row;
-	column = other.column;
+	pos = other.pos;
+	gCost = other.gCost;
+	hCost = other.hCost;
+	fCost = other.fCost;
+	
+	// ? is it?
+	parent = other.parent;
 }
 
-char Cell::getSymbol() const
-{
-	return symbol;
-}
-
-int Cell::getRow() const
-{
-	return row;
-}
-
-int Cell::getColumn() const
-{
-	return column;
-}
-
-void Cell::setSymbol(const char& symbol)
-{
-	this->symbol = symbol;
-}
-
-void Cell::setRow(const int& row)
-{
-	this->row = row;
-}
-
-void Cell::setColumn(const int& column)
-{
-	this->column = column;
-}
