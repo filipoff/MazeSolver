@@ -166,15 +166,30 @@ void Board::setBoardFromFile(std::istream &in)
 			in.get(c);
 			if (c == '\n')
 				continue;
-			board[i][j] = Cell(this,c, i, j);
+			board[i][j] = Cell(this, c, i, j);
+
+			if (c == constants::PASSABLE)
+			{
+				board[i][j].setPassableStatus(true);
+			}
+
+			if (c == constants::START)
+			{
+				board[i][j].setStartStatus(true);
+			}
+			if (c == constants::END)
+			{
+				board[i][j].setEndStatus(true);
+			}
+
 			setLockPairsPositions(c, i, j);
 		}
 }
 
 void Board::setLockPairsPositions(const char c, const size_t rowPosition, const size_t columnPosition)
 {
-	// TODO : better condition
-	if (c == ' ' || c == '#')
+	if (c == constants::PASSABLE || c == constants::WALL
+		|| c == constants::START || c == constants::END)
 		return;
 
 	size_t size = lockPairs.getSize();

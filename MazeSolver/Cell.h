@@ -1,7 +1,7 @@
 #pragma once
 #include "Utilities.h"
 
-class Cell; 
+class Cell;
 #include "Board.h"
 #include <iostream>
 /// Cell is a class that represents a cell in board of cells
@@ -31,6 +31,12 @@ private:
 	// the parrent of the current cell
 	// it is used for the algorithm
 	Cell* parent;
+
+	bool isInOpenedListStatus;
+	bool isInClosedListStatus;
+	bool isPassableStatus;
+	bool isStartStatus;
+	bool isEndStatus;
 
 private:
 
@@ -106,4 +112,17 @@ public:
 
 	// sets owner of the cell
 	void setOwner(Board* owner) { this->owner = owner; }
- };
+
+	bool isPassable() const { return isPassableStatus; }
+	bool isStart() const { return isStartStatus; }
+	bool isEnd() const { return isEndStatus; }
+	bool isInOpenedList() const { return isInOpenedListStatus; }
+	bool isInClosedList() const { return isInClosedListStatus; }
+
+	void setPassableStatus(bool status) { isPassableStatus = status; }
+	void setStartStatus(bool status) { isStartStatus = status; }
+	void setEndStatus(bool status) { isEndStatus = status; }
+	void setInOpenedListStatus(bool status) { isInOpenedListStatus = status; }
+	void setInClosedListStatus(bool status) { isInClosedListStatus = status; }
+
+};

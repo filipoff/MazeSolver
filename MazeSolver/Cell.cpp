@@ -1,6 +1,13 @@
 #include "Cell.h"
 
-Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL), owner(NULL) {}
+Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL), owner(NULL)
+{
+	isInClosedListStatus = false;
+	isInClosedListStatus = false;
+	isPassableStatus = false;
+	isStartStatus = false;
+	isEndStatus = false;
+}
 
 Cell::Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition) :
 owner(owner), symbol(symbol), pos(rowPosition, columnPosition), gCost(0), hCost(0), fCost(0),
@@ -27,6 +34,11 @@ void Cell::copyFrom(const Cell& other)
 	hCost = other.hCost;
 	fCost = other.fCost;
 	owner = other.owner;
+	isInOpenedListStatus = other.isInOpenedListStatus;
+	isInClosedListStatus = other.isInClosedListStatus;
+	isPassableStatus = other.isPassableStatus;
+	isStartStatus = other.isStartStatus;
+	isEndStatus = other.isEndStatus;
 	// ? is it?
 	parent = other.parent;
 }
