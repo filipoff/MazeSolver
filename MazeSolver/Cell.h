@@ -3,6 +3,7 @@
 
 class Cell;
 #include "Board.h"
+#include <vector>
 #include <iostream>
 /// Cell is a class that represents a cell in board of cells
 class Cell
@@ -20,13 +21,10 @@ private:
 	/// numbers used for the path-finding algorithm
 
 	// the distance from the current cell to the start cell
-	int gCost;
+	size_t gCost;
 
 	// the distance from the current cell to the end cell
-	int hCost;
-
-	// the combined number of the gCost and hCost
-	int fCost;
+	size_t hCost;
 
 	// the parrent of the current cell
 	// it is used for the algorithm
@@ -42,6 +40,19 @@ private:
 
 	// function that copies data from one cell to another
 	void copyFrom(const Cell& other);
+
+	// gets left neighbour if there is any else returns null pointer
+	Cell* getLeftNeighbour() const;
+
+	// gets right neighbour if there is any else returns null pointer
+	Cell* getRightNeighbour() const;
+
+	// gets upper neighbour if there is any else returns null pointer
+	Cell* getUpperNeighbour() const;
+
+	// gets bottom neighbour if there is any else returns null pointer
+	Cell* getBottomNeighbour() const;
+
 
 
 public:
@@ -72,22 +83,19 @@ public:
 	void setPosition(size_t rowPosition, size_t columnPosition) { pos.setPosition(rowPosition, columnPosition); }
 
 	// gets cell g cost
-	int getGCost() const { return gCost; }
+	size_t getGCost() const { return gCost; }
 
 	// gets cell h cost
-	int getHCost() const { return hCost; }
+	size_t getHCost() const { return hCost; }
 
 	// gets cell f cost
-	int getFCost() const { return fCost; }
+	size_t getFCost() const { return gCost + hCost; }
 
 	// sets cell g cost
-	void setGCost(int gCost) { this->gCost = gCost; }
+	void setGCost(size_t gCost) { this->gCost = gCost; }
 
 	// sets cell h cost
-	void setHCost(int hCost) { this->hCost = hCost; }
-
-	// calculates the f cost
-	void calculateFCost() { fCost = gCost + hCost; }
+	void setHCost(size_t hCost) { this->hCost = hCost; }
 
 	// gets cell parent
 	Cell* getParent() const { return parent; }
@@ -95,17 +103,6 @@ public:
 	// sets cell parent
 	void setParent(Cell* parent) { this->parent = parent; }
 
-	// gets left neighbour if there is any else returns null pointer
-	Cell* getLeftNeighbour() const;
-
-	// gets right neighbour if there is any else returns null pointer
-	Cell* getRightNeighbour() const;
-
-	// gets upper neighbour if there is any else returns null pointer
-	Cell* getUpperNeighbour() const;
-
-	// gets bottom neighbour if there is any else returns null pointer
-	Cell* getBottomNeighbour() const;
 
 	// gets owner of the cell
 	Board* getOwner() const { return owner; }
@@ -125,4 +122,5 @@ public:
 	void setInOpenedListStatus(bool status) { isInOpenedListStatus = status; }
 	void setInClosedListStatus(bool status) { isInClosedListStatus = status; }
 
+	void getPassableNeighbours(std::vector<Cell*> &neighbours) const;
 };

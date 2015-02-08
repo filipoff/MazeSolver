@@ -1,6 +1,6 @@
 #include "Cell.h"
 
-Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL), owner(NULL)
+Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), parent(NULL), owner(NULL)
 {
 	isInClosedListStatus = false;
 	isInClosedListStatus = false;
@@ -10,7 +10,7 @@ Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL),
 }
 
 Cell::Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition) :
-owner(owner), symbol(symbol), pos(rowPosition, columnPosition), gCost(0), hCost(0), fCost(0),
+owner(owner), symbol(symbol), pos(rowPosition, columnPosition), gCost(0), hCost(0),
 parent(NULL) {}
 
 
@@ -32,7 +32,6 @@ void Cell::copyFrom(const Cell& other)
 	pos = other.pos;
 	gCost = other.gCost;
 	hCost = other.hCost;
-	fCost = other.fCost;
 	owner = other.owner;
 	isInOpenedListStatus = other.isInOpenedListStatus;
 	isInClosedListStatus = other.isInClosedListStatus;
@@ -62,4 +61,20 @@ Cell* Cell::getUpperNeighbour() const
 Cell* Cell::getBottomNeighbour() const
 {
 	return owner->getCellAt(pos.rowPosition + 1, pos.columnPosition);
+}
+
+
+void Cell::getPassableNeighbours(std::vector<Cell*> &neighbours) const
+{
+	// will it crash if its NULL?
+	neighbours.clear();
+
+	if (getLeftNeighbour() && getLeftNeighbour()->isPassable())
+		neighbours.push_back(getLeftNeighbour());
+	if (getRightNeighbour() && getRightNeighbour()->isPassable())
+		neighbours.push_back(getRightNeighbour());
+	if (getUpperNeighbour() && getUpperNeighbour()->isPassable())
+		neighbours.push_back(getUpperNeighbour());
+	if (getBottomNeighbour() && getBottomNeighbour()->isPassable())
+		neighbours.push_back(getBottomNeighbour());
 }

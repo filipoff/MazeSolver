@@ -128,27 +128,32 @@ bool Board::getBoardSizeFromFile(std::istream &in, size_t& newHeight, size_t& ne
 bool Board::setLockPairsFromFile(std::istream &in)
 {
 	char c;
+	char doorSymbol;
+	char keySymbol;
 	LockPair pair;
-	char next;
 	while (in)
 	{
-		in.get(c);
-		if (!in)
+		c = in.get();
+		if (c == EOF)
 			break;
 		if (c == '\n')
 		{
 			continue;
 		}
-		in.seekg(1, std::ios::cur);
-		next = in.peek();
-		if (next == EOF)
-			return false;
+		doorSymbol = c;
+		c = in.get();
 
-		in.seekg(-1, std::ios::cur);
-		pair.setDoorSymbol(c);
-		in.get(c);
-		pair.setKeySymbol(c);
+		if (c == EOF || c == '\n')
+			return false;
+		keySymbol = c;
+
+		pair.setDoorSymbol(doorSymbol);
+		pair.setKeySymbol(keySymbol);
 		lockPairs.push(pair);
+	}
+	if (lockPairs.isEmpty())
+	{
+		return false;
 	}
 	return true;
 }
@@ -168,6 +173,7 @@ void Board::setBoardFromFile(std::istream &in)
 				continue;
 			board[i][j] = Cell(this, c, i, j);
 
+			// TODO must be in cell constructor
 			if (c == constants::PASSABLE)
 			{
 				board[i][j].setPassableStatus(true);
@@ -195,6 +201,7 @@ void Board::setLockPairsPositions(const char c, const size_t rowPosition, const 
 	size_t size = lockPairs.getSize();
 	for (size_t i = 0; i < size; i++)
 	{
+		// TODO must check if key or door has already been set
 		if (lockPairs[i].getKeySymbol() == c)
 		{
 			lockPairs[i].setKeyPosition(rowPosition, columnPosition);

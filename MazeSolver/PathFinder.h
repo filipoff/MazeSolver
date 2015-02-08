@@ -1,11 +1,15 @@
 #pragma once
 #include "Cell.h"
 #include <list>
+#include <algorithm>
+
 class PathFinder
 {
-	std::list<Cell*> openedCellsList;
-	std::list<Cell*> closedCellsList;
+private:
+	
+	static void calculateCostsOf(Cell* current, Cell* start, Cell* end);
+	static void calculateHCostOf(Cell* current, const Cell* end);
 
 public:
-	bool findPath(const Cell* start, const Cell* end);
+	static bool findPath(Cell* start, Cell* end, std::list<Cell*> &path);
 };
