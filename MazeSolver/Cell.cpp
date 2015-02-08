@@ -1,9 +1,10 @@
 #include "Cell.h"
 
-Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL) {}
+Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), fCost(0), parent(NULL), owner(NULL) {}
 
-Cell::Cell(char symbol, size_t rowPosition, size_t columnPosition) : symbol(symbol),
-pos(rowPosition, columnPosition),gCost(0), hCost(0), fCost(0), parent(NULL) {}
+Cell::Cell(Board* owner,char symbol, size_t rowPosition, size_t columnPosition) :
+symbol(symbol), pos(rowPosition, columnPosition),gCost(0), hCost(0), fCost(0), 
+parent(NULL), owner(owner) {}
 
 
 Cell::Cell(const Cell& other)

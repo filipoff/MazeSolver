@@ -87,6 +87,7 @@
     <ClInclude Include="Cell.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="LockPair.h" />
+    <ClInclude Include="PathFinder.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

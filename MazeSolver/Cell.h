@@ -1,5 +1,8 @@
 #pragma once
 #include "Utilities.h"
+
+class Cell; 
+#include "Board.h"
 #include <iostream>
 /// Cell is a class that represents a cell in board of cells
 class Cell
@@ -12,6 +15,8 @@ private:
 	// the position of the cell on the board
 	Position pos;
 
+	// the board to which the cell belongs to
+	Board* owner;
 	/// numbers used for the path-finding algorithm
 
 	// the distance from the current cell to the start cell
@@ -41,8 +46,8 @@ public:
 	// the copy ctor
 	Cell(const Cell& other);
 
-	// ctor that takes symbol and position of the cell
-	Cell(char symbol, size_t rowPosition, size_t columnPosition);
+	// ctor that takes symbol and position of the cell and sets the owner
+	Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition);
 
 	// the assigment operator
 

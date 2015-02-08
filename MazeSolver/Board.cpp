@@ -165,7 +165,7 @@ void Board::setBoardFromFile(std::istream &in)
 			in.get(c);
 			if (c == '\n')
 				continue;
-			board[i][j] = Cell(c, i, j);
+			board[i][j] = Cell(this,c, i, j);
 			setLockPairsPositions(c, i, j);
 		}
 }
