@@ -1,10 +1,10 @@
 #pragma once
 #include "Utilities.h"
-
+#include "Vector.h"
+#include <iostream>
 class Cell;
 #include "Board.h"
-#include <vector>
-#include <iostream>
+
 /// Cell is a class that represents a cell in board of cells
 class Cell
 {
@@ -152,5 +152,5 @@ public:
 
 	// fills the vector that is passed as parameter with neighbours of the cell
 	// only if the are passable cells
-	void getPassableNeighbours(std::vector<Cell*> &neighbours) const;
+	void getPassableNeighbours(Vector<Cell*> &neighbours) const;
 };

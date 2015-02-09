@@ -87,17 +87,16 @@ Cell* Cell::getBottomNeighbour() const
 }
 
 
-void Cell::getPassableNeighbours(std::vector<Cell*> &neighbours) const
+void Cell::getPassableNeighbours(Vector<Cell*> &neighbours) const
 {
-	// will it crash if its NULL?
-	neighbours.clear();
 
+	neighbours.clear();
 	if (getLeftNeighbour() && getLeftNeighbour()->isPassable())
-		neighbours.push_back(getLeftNeighbour());
+		neighbours.push(getLeftNeighbour());
 	if (getRightNeighbour() && getRightNeighbour()->isPassable())
-		neighbours.push_back(getRightNeighbour());
+		neighbours.push(getRightNeighbour());
 	if (getUpperNeighbour() && getUpperNeighbour()->isPassable())
-		neighbours.push_back(getUpperNeighbour());
+		neighbours.push(getUpperNeighbour());
 	if (getBottomNeighbour() && getBottomNeighbour()->isPassable())
-		neighbours.push_back(getBottomNeighbour());
+		neighbours.push(getBottomNeighbour());
 }
