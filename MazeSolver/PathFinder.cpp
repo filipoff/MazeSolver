@@ -52,10 +52,10 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 		closedCellsList.push_back(current);
 		current->setInClosedListStatus(true);
 		
-		std::vector<Cell*> neighbours;
+		Vector<Cell*> neighbours;
 		current->getPassableNeighbours(neighbours);
 
-		for (size_t i = 0; i < neighbours.size(); i++)
+		for (size_t i = 0; i < neighbours.getSize(); i++)
 		{
 			Cell* neighbour = neighbours[i];
 

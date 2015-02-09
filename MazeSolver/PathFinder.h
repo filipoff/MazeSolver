@@ -1,6 +1,7 @@
 #pragma once
 #include "Cell.h"
 #include <list>
+#include "Vector.h"
 #include <algorithm>
 
 class PathFinder
