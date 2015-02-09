@@ -79,7 +79,7 @@ Board::~Board()
 	free();
 }
 
-bool Board::getBoardSizeFromFile(std::istream &in, size_t& newHeight, size_t& newWidth)
+bool Board::getBoardSizeFromFile(std::istream &in, size_t& newHeight, size_t& newWidth) const
 {
 	in.clear();
 	in.seekg(0, std::ios::beg);

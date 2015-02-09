@@ -52,8 +52,8 @@ private:
 
 	// gets bottom neighbour if there is any else returns null pointer
 	Cell* getBottomNeighbour() const;
-
-
+	
+	void initStatusesToFalse();
 
 public:
 
