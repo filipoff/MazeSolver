@@ -30,10 +30,21 @@ private:
 	// it is used for the algorithm
 	Cell* parent;
 
+	// a bool status used by the pathfinder
+	// stores if the cell is in the opened list
 	bool isInOpenedListStatus;
+
+	// a bool status used by the pathfinder
+	// stores if the cell is in the closed list
 	bool isInClosedListStatus;
+
+	// bool status that stores if the cell is passable
 	bool isPassableStatus;
+
+	// bool status that stores if the cell is the start point of the maze
 	bool isStartStatus;
+
+	// bool status that stores if the cell is the end point of the maze
 	bool isEndStatus;
 
 private:
@@ -53,6 +64,7 @@ private:
 	// gets bottom neighbour if there is any else returns null pointer
 	Cell* getBottomNeighbour() const;
 	
+	// initializes all bool statuses to false
 	void initStatusesToFalse();
 
 public:
@@ -67,7 +79,6 @@ public:
 	Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition);
 
 	// the assigment operator
-
 	Cell& operator=(const Cell& other);
 
 	// gets cell symbol
@@ -103,24 +114,43 @@ public:
 	// sets cell parent
 	void setParent(Cell* parent) { this->parent = parent; }
 
-
 	// gets owner of the cell
 	Board* getOwner() const { return owner; }
 
 	// sets owner of the cell
 	void setOwner(Board* owner) { this->owner = owner; }
 
+	// checks if the cell is passable
 	bool isPassable() const { return isPassableStatus; }
+
+	// checks if the cell is the start cell of the maze
 	bool isStart() const { return isStartStatus; }
+
+	// checks if the cell is the end cell of the maze
 	bool isEnd() const { return isEndStatus; }
+
+	// checks if the cell is in the opened list used by the pathfinder
 	bool isInOpenedList() const { return isInOpenedListStatus; }
+
+	// checks if the cell is in the closed list used by the pathfinder
 	bool isInClosedList() const { return isInClosedListStatus; }
 
+	// sets the cell's passable status
 	void setPassableStatus(bool status) { isPassableStatus = status; }
+
+	// sets the cell's start status
 	void setStartStatus(bool status) { isStartStatus = status; }
+
+	// sets the cell's end status
 	void setEndStatus(bool status) { isEndStatus = status; }
+
+	// sets the cell's status if it's in the opened list
 	void setInOpenedListStatus(bool status) { isInOpenedListStatus = status; }
+
+	// sets the cell's status if it's in the closed list
 	void setInClosedListStatus(bool status) { isInClosedListStatus = status; }
 
+	// fills the vector that is passed as parameter with neighbours of the cell
+	// only if the are passable cells
 	void getPassableNeighbours(std::vector<Cell*> &neighbours) const;
 };
