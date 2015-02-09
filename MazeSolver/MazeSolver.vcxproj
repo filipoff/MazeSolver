@@ -87,6 +87,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="List.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="LockPair.h" />
     <ClInclude Include="PathFinder.h" />

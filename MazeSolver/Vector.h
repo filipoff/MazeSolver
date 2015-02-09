@@ -143,7 +143,7 @@ const T& Vector<T>::operator[](size_t index) const
 {
 	if (index >= size)
 	{
-		throw "Invalid index! Cannot get element";
+		throw std::out_of_range("Invalid index when called const operator[]");
 	}
 
 	return data[index];
@@ -154,7 +154,7 @@ T& Vector<T>::operator[](size_t index)
 {
 	if (index >= size)
 	{
-		throw "Invalid index! Cannot set element";
+		throw std::out_of_range("Invalid index when called non-const operator[]");
 	}
 
 	return data[index];
@@ -165,7 +165,7 @@ void Vector<T>::removeAt(size_t index)
 {
 	if (index >= size)
 	{
-		throw "Invalid index! Cannot remove element";
+		throw std::out_of_range("Invalid index when called removeAt()");
 	}
 
 	for (size_t i = index; i < size - 1; i++)

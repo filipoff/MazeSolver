@@ -85,6 +85,7 @@
     <ClInclude Include="..\MazeSolver\Board.h" />
     <ClInclude Include="..\MazeSolver\Cell.h" />
     <ClInclude Include="..\MazeSolver\Constants.h" />
+    <ClInclude Include="..\MazeSolver\List.h" />
     <ClInclude Include="..\MazeSolver\LockPair.h" />
     <ClInclude Include="..\MazeSolver\PathFinder.h" />
     <ClInclude Include="..\MazeSolver\Utilities.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="..\MazeSolver\LockPair.cpp" />
     <ClCompile Include="..\MazeSolver\PathFinder.cpp" />
     <ClCompile Include="..\MazeSolver\Utilities.cpp" />
+    <ClCompile Include="ListUnitTests.cpp" />
     <ClCompile Include="VectorUnitTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
