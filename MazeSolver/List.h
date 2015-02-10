@@ -12,7 +12,7 @@ struct Node
 	Node(const T& element, Node<T>* previous = NULL, Node<T>* next = NULL);
 	Node(const Node<T>& other);
 	Node& operator=(const Node<T>& other);
-	~Node() {} ;
+	~Node() {};
 };
 
 template <class T>
@@ -80,16 +80,22 @@ public:
 	{
 	private:
 		Node<T>* element;
-		List<T>* owner;
-
+		Iterator(Node<T>* element);
+		friend class List<T>;
 	public:
-		Iterator(Node<T>* element, List<T>* owner);
-		bool operator==(const Iterator& other);
-		bool operator!=(const Iterator& other);
+		bool operator==(const Iterator& other) const;
+		bool operator!=(const Iterator& other) const;
+		typename const List<T>::Iterator& operator++() const;
+		typename List<T>::Iterator& operator++();
+		typename const List<T>::Iterator& operator--() const;
+		typename List<T>::Iterator& operator--();
 		const T& operator*() const;
 		T& operator*();
 	};
+	Iterator begin();
+	Iterator end();
 };
+
 
 template <class T>
 bool List<T>::isEmpty() const
@@ -221,7 +227,7 @@ T List<T>::pop_front()
 		size--;
 		return data;
 	}
-	
+
 	first->next->previous = NULL;
 	first = first->next;
 	delete toPop;
@@ -235,6 +241,77 @@ void List<T>::clear()
 	{
 		pop_back();
 	}
+}
+
+template <class T>
+List<T>::Iterator::Iterator(Node<T>* element) : element(element) {}
+
+template <class T>
+bool List<T>::Iterator::operator==(const Iterator& other) const
+{
+	return element == other.element;
+}
+
+template <class T>
+bool List<T>::Iterator::operator!=(const Iterator& other) const
+{
+	return element != other.element;
+}
+
+template <class T>
+typename const List<T>::Iterator& List<T>::Iterator::operator++() const
+{
+	if (element && element->next)
+		element = element->next;
+	return *this;
+}
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator++()
+{
+	if (element && element->next)
+		element = element->next;
+	return *this;
+}
+
+template <class T>
+typename const List<T>::Iterator& List<T>::Iterator::operator--() const
+{
+	if (element && element->previous)
+		element = element->previous;
+	return *this;
+}
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator--()
+{
+	if (element && element->previous)
+		element = element->previous;
+	return *this;
+}
+
+template <class T>
+const T& List<T>::Iterator::operator*() const
+{
+	return element->data;
+}
+
+template <class T>
+T& List<T>::Iterator::operator*()
+{
+	return element->data;
+}
+
+template <class T>
+typename List<T>::Iterator List<T>::begin()
+{
+	return Iterator(first);
+}
+
+template <class T>
+typename List<T>::Iterator List<T>::end()
+{
+	return  Iterator(last);
 }
 
 
