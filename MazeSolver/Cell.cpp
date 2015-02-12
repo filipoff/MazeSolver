@@ -35,6 +35,8 @@ void Cell::initStatusesToFalse()
 	isPassableStatus = false;
 	isStartStatus = false;
 	isEndStatus = false;
+	isKeyStatus = false;
+	isDoorStatus = false;
 }
 
 Cell::Cell(const Cell& other)

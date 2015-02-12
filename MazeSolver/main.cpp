@@ -12,6 +12,7 @@ int main()
 	Board test;
 	test.loadFromFileName("testMap.txt");
 	test.print();
+	
 
 	std::list<Cell*> path;
 	Cell* start = test.getStartCell();

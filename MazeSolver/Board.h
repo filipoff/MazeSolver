@@ -76,4 +76,6 @@ public:
 	Cell* getStartCell() const;
 	Cell* getEndCell() const;
 
+	Vector<LockPair> getLockPairs() const;
+
 };

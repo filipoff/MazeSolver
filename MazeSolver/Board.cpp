@@ -264,3 +264,8 @@ Cell* Board::getEndCell() const
 		}
 	return NULL;
 }
+
+Vector<LockPair> Board::getLockPairs() const
+{
+	return lockPairs;
+}
