@@ -47,6 +47,12 @@ private:
 	// bool status that stores if the cell is the end point of the maze
 	bool isEndStatus;
 
+	// bool status that stores if the cell is a key
+	bool isKeyStatus;
+
+	// bool status that stores if the cell is door
+	bool isDoorStatus;
+
 private:
 
 	// function that copies data from one cell to another
@@ -134,6 +140,18 @@ public:
 
 	// checks if the cell is in the closed list used by the pathfinder
 	bool isInClosedList() const { return isInClosedListStatus; }
+
+	// checks if the cell is an key
+	bool isKey() const { return isKeyStatus; }
+	
+	// checks if the cell is a door
+	bool isDoor() const { return isDoorStatus; }
+
+	// sets the cell's key status
+	void setKeyStatus(bool status) { isKeyStatus = status; }
+
+	// sets the cell's door status
+	void setDoorStatus(bool status) { isDoorStatus = status; }
 
 	// sets the cell's passable status
 	void setPassableStatus(bool status) { isPassableStatus = status; }
