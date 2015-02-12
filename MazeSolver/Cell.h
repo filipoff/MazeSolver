@@ -63,7 +63,7 @@ private:
 
 	// gets bottom neighbour if there is any else returns null pointer
 	Cell* getBottomNeighbour() const;
-	
+
 	// initializes all bool statuses to false
 	void initStatusesToFalse();
 
@@ -88,7 +88,7 @@ public:
 	Position getPosition() const { return pos; }
 
 	// sets cell symbol
-	void setSymbol(const char& symbol);
+	void setSymbol(const char& symbol) { this->symbol = symbol; }
 
 	// sets cell position
 	void setPosition(size_t rowPosition, size_t columnPosition) { pos.setPosition(rowPosition, columnPosition); }

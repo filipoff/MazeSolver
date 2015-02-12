@@ -255,3 +255,26 @@ Cell* Board::getCellAt(size_t row, size_t column) const
 
 	return &board[row][column];
 }
+
+
+Cell* Board::getStartCell() const
+{
+	for (size_t i = 0; i < height; i++)
+		for (size_t j = 0; j < width; j++)
+		{
+			if (board[i][j].isStart())
+				return &board[i][j];
+		}
+	return NULL;
+}
+
+Cell* Board::getEndCell() const
+{
+	for (size_t i = 0; i < height; i++)
+		for (size_t j = 0; j < width; j++)
+		{
+			if (board[i][j].isEnd())
+				return &board[i][j];
+		}
+	return NULL;
+}

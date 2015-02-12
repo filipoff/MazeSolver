@@ -27,6 +27,8 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 	current = start;
 	while (!openedCellsList.empty())
 	{
+		std::list<Cell*>::iterator i = openedCellsList.begin();
+		current = *i;
 		for (std::list<Cell*>::iterator i = openedCellsList.begin(); i != openedCellsList.end(); i++)
 		{
 			if ((*i)->getFCost() <= current->getFCost())
@@ -41,6 +43,7 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 			while (current)
 			{
 				path.push_front(current);
+				current->setSymbol('+');
 				current = current->getParent();
 			}
 			return true;

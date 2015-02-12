@@ -7,7 +7,7 @@ Cell::Cell() : symbol(0), pos(0, 0), gCost(0), hCost(0), parent(NULL), owner(NUL
 
 Cell::Cell(Board* owner, char symbol, size_t rowPosition, size_t columnPosition) :
 owner(owner), symbol(symbol), pos(rowPosition, columnPosition), gCost(0), hCost(0),
-parent(NULL) 
+parent(NULL)
 {
 
 	initStatusesToFalse();
@@ -31,7 +31,7 @@ parent(NULL)
 void Cell::initStatusesToFalse()
 {
 	isInClosedListStatus = false;
-	isInClosedListStatus = false;
+	isInOpenedListStatus = false;
 	isPassableStatus = false;
 	isStartStatus = false;
 	isEndStatus = false;
@@ -91,12 +91,19 @@ void Cell::getPassableNeighbours(Vector<Cell*> &neighbours) const
 {
 
 	neighbours.clear();
-	if (getLeftNeighbour() && getLeftNeighbour()->isPassable())
+	if ((getLeftNeighbour() && getLeftNeighbour()->isPassable()) ||
+		getLeftNeighbour()->isEnd())
 		neighbours.push(getLeftNeighbour());
-	if (getRightNeighbour() && getRightNeighbour()->isPassable())
+
+	if ((getRightNeighbour() && getRightNeighbour()->isPassable()) ||
+		getRightNeighbour()->isEnd())
 		neighbours.push(getRightNeighbour());
-	if (getUpperNeighbour() && getUpperNeighbour()->isPassable())
+
+	if ((getUpperNeighbour() && getUpperNeighbour()->isPassable()) ||
+		getUpperNeighbour()->isEnd())
 		neighbours.push(getUpperNeighbour());
-	if (getBottomNeighbour() && getBottomNeighbour()->isPassable())
+
+	if ((getBottomNeighbour() && getBottomNeighbour()->isPassable()) ||
+		getBottomNeighbour()->isEnd())
 		neighbours.push(getBottomNeighbour());
 }

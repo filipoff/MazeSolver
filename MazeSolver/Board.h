@@ -73,4 +73,7 @@ public:
 	// gets cell at given position
 	Cell* getCellAt(size_t row, size_t column) const;
 
+	Cell* getStartCell() const;
+	Cell* getEndCell() const;
+
 };

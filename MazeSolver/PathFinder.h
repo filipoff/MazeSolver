@@ -7,7 +7,7 @@
 class PathFinder
 {
 private:
-	
+
 	static void calculateHCostOf(Cell* current, const Cell* end);
 
 public:

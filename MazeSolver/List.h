@@ -9,7 +9,7 @@ struct Node
 	Node<T>* next;
 	Node<T>* previous;
 	Node();
-	Node(const T& element, Node<T>* previous = NULL, Node<T>* next = NULL);
+	Node(const T& element);
 	Node(const Node<T>& other);
 	Node& operator=(const Node<T>& other);
 	~Node() {};
@@ -19,8 +19,7 @@ template <class T>
 Node<T>::Node() : next(NULL), previous(NULL) {}
 
 template <class T>
-Node<T>::Node(const T& element, Node<T>* previous, Node<T>* next) :
-data(element), previous(previous), next(next) {}
+Node<T>::Node(const T& element) : data(element), previous(NULL), next(NULL) {}
 
 template <class T>
 Node<T>::Node(const Node<T>& other)
@@ -67,21 +66,14 @@ public:
 	~List();
 
 public:
-	bool isEmpty() const;
-	void push_back(const T& element);
-	void push_front(const T& element);
-	T pop_back();
-	T pop_front();
-	size_t getSize() const { return size; }
-	void clear();
 
-public:
 	class Iterator
 	{
+
 	private:
 		Node<T>* element;
 		Iterator(Node<T>* element);
-		friend class List<T>;
+		friend class List < T > ;
 	public:
 		bool operator==(const Iterator& other) const;
 		bool operator!=(const Iterator& other) const;
@@ -92,6 +84,19 @@ public:
 		const T& operator*() const;
 		T& operator*();
 	};
+
+public:
+	bool isEmpty() const;
+	void push_back(const T& element);
+	void push_front(const T& element);
+	T pop_back();
+	T pop_front();
+	T peek_front() const;
+	T peek_back() const;
+	size_t getSize() const { return size; }
+	void clear();
+	void removeAt(Iterator& iter);
+	void remove(const T& element);
 	Iterator begin();
 	Iterator end();
 };
@@ -145,7 +150,7 @@ template <class T>
 List<T>& List<T>::operator=(const List<T>& other)
 {
 	if (this != &other)
-	{
+	{ 
 		clear();
 		copyFrom(other);
 	}
@@ -210,6 +215,28 @@ T List<T>::pop_back()
 }
 
 template <class T>
+T List<T>::peek_front() const
+{
+	if (isEmpty())
+	{
+		throw std::out_of_range("Peeked empty list!");
+	}
+	T data = first->data;
+	return data;
+}
+
+template <class T>
+T List<T>::peek_back() const
+{
+	if (isEmpty())
+	{
+		throw std::out_of_range("Peeked empty list!");
+	}
+	T data = last->data;
+	return data;
+}
+
+template <class T>
 T List<T>::pop_front()
 {
 	if (isEmpty())
@@ -234,6 +261,79 @@ T List<T>::pop_front()
 	size--;
 	return data;
 }
+
+
+// more info about pop_back and pop_front
+
+template <class T>
+void List<T>::removeAt(Iterator& iter)
+{
+	if (isEmpty())
+	{
+		throw std::out_of_range("called removeAt when list is empty!");
+	}
+	if (iter.element == first)
+	{
+		++iter;
+		pop_front();
+	}
+	else if (iter.element == last)
+	{
+		--iter;
+		pop_back();
+		++iter;
+	}
+	else
+	{
+		Node<T>* pointer = iter.element;
+		++iter;
+		pointer->next->previous = pointer->previous;
+		pointer->previous->next = pointer->next;
+		pointer->next = pointer->previous = NULL;
+		delete pointer;
+		size--;
+	}
+}
+
+template <class T>
+void List<T>::remove(const T& element)
+{
+	if (isEmpty())
+	{
+		throw std::out_of_range("called remove when list is empty!");
+	}
+
+	/*
+	if (first == last)
+	{
+		if (first->data == element)
+			pop_back();
+	}
+	else
+	{
+		Iterator it = begin();
+
+		while (it != end())
+		{
+			if (*it == element)
+			{
+				removeAt(it);
+			}
+			++it;
+		}
+	}
+	*/
+
+	for (Iterator it = begin(); it != end();)
+	{
+		if ((*it) == element)
+			removeAt(it);
+		else
+			++it;
+	}
+}
+
+
 template <class T>
 void List<T>::clear()
 {
@@ -261,7 +361,7 @@ bool List<T>::Iterator::operator!=(const Iterator& other) const
 template <class T>
 typename const List<T>::Iterator& List<T>::Iterator::operator++() const
 {
-	if (element && element->next)
+	if (element)
 		element = element->next;
 	return *this;
 }
@@ -269,7 +369,7 @@ typename const List<T>::Iterator& List<T>::Iterator::operator++() const
 template <class T>
 typename List<T>::Iterator& List<T>::Iterator::operator++()
 {
-	if (element && element->next)
+	if (element)
 		element = element->next;
 	return *this;
 }
@@ -277,7 +377,7 @@ typename List<T>::Iterator& List<T>::Iterator::operator++()
 template <class T>
 typename const List<T>::Iterator& List<T>::Iterator::operator--() const
 {
-	if (element && element->previous)
+	if (element)
 		element = element->previous;
 	return *this;
 }
@@ -285,7 +385,7 @@ typename const List<T>::Iterator& List<T>::Iterator::operator--() const
 template <class T>
 typename List<T>::Iterator& List<T>::Iterator::operator--()
 {
-	if (element && element->previous)
+	if (element)
 		element = element->previous;
 	return *this;
 }
@@ -311,7 +411,9 @@ typename List<T>::Iterator List<T>::begin()
 template <class T>
 typename List<T>::Iterator List<T>::end()
 {
-	return  Iterator(last);
+	if (!last)
+		return  Iterator(NULL);
+	return Iterator(last->next);
 }
 
 
