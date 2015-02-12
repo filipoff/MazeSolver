@@ -303,27 +303,6 @@ void List<T>::remove(const T& element)
 		throw std::out_of_range("called remove when list is empty!");
 	}
 
-	/*
-	if (first == last)
-	{
-		if (first->data == element)
-			pop_back();
-	}
-	else
-	{
-		Iterator it = begin();
-
-		while (it != end())
-		{
-			if (*it == element)
-			{
-				removeAt(it);
-			}
-			++it;
-		}
-	}
-	*/
-
 	for (Iterator it = begin(); it != end();)
 	{
 		if ((*it) == element)
