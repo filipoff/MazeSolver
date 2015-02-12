@@ -14,7 +14,7 @@ int main()
 	test.print();
 	
 
-	std::list<Cell*> path;
+	List<Cell*> path;
 	Cell* start = test.getStartCell();
 	Cell* end = test.getEndCell();
 	PathFinder::findPath(start, end, path);

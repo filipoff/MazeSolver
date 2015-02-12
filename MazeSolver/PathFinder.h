@@ -1,6 +1,6 @@
 #pragma once
 #include "Cell.h"
-#include <list>
+#include "List.h"
 #include "Vector.h"
 #include <algorithm>
 
@@ -11,5 +11,5 @@ private:
 	static void calculateHCostOf(Cell* current, const Cell* end);
 
 public:
-	static bool findPath(Cell* start, Cell* end, std::list<Cell*> &path);
+	static bool findPath(Cell* start, Cell* end, List<Cell*> &path);
 };

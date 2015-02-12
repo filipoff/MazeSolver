@@ -12,10 +12,10 @@ void PathFinder::calculateHCostOf(Cell* current, const Cell* end)
 
 
 
-bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
+bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path)
 {
-	std::list<Cell*> openedCellsList;
-	std::list<Cell*> closedCellsList;
+	List<Cell*> openedCellsList;
+	List<Cell*> closedCellsList;
 	Cell* current;
 
 	calculateHCostOf(start,end);
@@ -25,15 +25,16 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 
 
 	current = start;
-	while (!openedCellsList.empty())
+
+	while (!openedCellsList.isEmpty())
 	{
-		std::list<Cell*>::iterator i = openedCellsList.begin();
-		current = *i;
-		for (std::list<Cell*>::iterator i = openedCellsList.begin(); i != openedCellsList.end(); i++)
+		current = openedCellsList.peek_front();
+
+		for (List<Cell*>::Iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
 		{
-			if ((*i)->getFCost() <= current->getFCost())
+			if ((*it)->getFCost() <= current->getFCost())
 			{
-				current = *i;
+				current = *it;
 			}
 		}
 
