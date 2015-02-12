@@ -172,22 +172,6 @@ void Board::setBoardFromFile(std::istream &in)
 			if (c == '\n')
 				continue;
 			board[i][j] = Cell(this, c, i, j);
-
-			// TODO must be in cell constructor
-			if (c == constants::PASSABLE)
-			{
-				board[i][j].setPassableStatus(true);
-			}
-
-			if (c == constants::START)
-			{
-				board[i][j].setStartStatus(true);
-			}
-			if (c == constants::END)
-			{
-				board[i][j].setEndStatus(true);
-			}
-
 			setLockPairsPositions(c, i, j);
 		}
 }
@@ -205,11 +189,13 @@ void Board::setLockPairsPositions(const char c, const size_t rowPosition, const 
 		if (lockPairs[i].getKeySymbol() == c)
 		{
 			lockPairs[i].setKeyPosition(rowPosition, columnPosition);
+			board[rowPosition][columnPosition].setKeyStatus(true);
 			return;
 		}
 		if (lockPairs[i].getDoorSymbol() == c)
 		{
 			lockPairs[i].setDoorPosition(rowPosition, columnPosition);
+			board[rowPosition][columnPosition].setDoorStatus(true);
 			return;
 		}
 	}
