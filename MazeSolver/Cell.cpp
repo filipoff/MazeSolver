@@ -89,23 +89,35 @@ Cell* Cell::getBottomNeighbour() const
 }
 
 
+bool Cell::conditionToPushInPassableNeighbours(const Cell* neighbour) const
+{
+	if (neighbour &&
+		neighbour->isPassable() ||
+		neighbour->isKey() ||
+		neighbour->isDoor() ||
+		//neighbour->isStart() ||
+		neighbour->isEnd())
+	{
+		return true;
+	}
+	return false;
+}
+
+
 void Cell::getPassableNeighbours(Vector<Cell*> &neighbours) const
 {
 
 	neighbours.clear();
-	if ((getLeftNeighbour() && getLeftNeighbour()->isPassable()) ||
-		getLeftNeighbour()->isEnd())
+
+	if (conditionToPushInPassableNeighbours(getLeftNeighbour()))
 		neighbours.push(getLeftNeighbour());
 
-	if ((getRightNeighbour() && getRightNeighbour()->isPassable()) ||
-		getRightNeighbour()->isEnd())
+	if (conditionToPushInPassableNeighbours(getRightNeighbour()))
 		neighbours.push(getRightNeighbour());
 
-	if ((getUpperNeighbour() && getUpperNeighbour()->isPassable()) ||
-		getUpperNeighbour()->isEnd())
+	if (conditionToPushInPassableNeighbours(getUpperNeighbour()))
 		neighbours.push(getUpperNeighbour());
 
-	if ((getBottomNeighbour() && getBottomNeighbour()->isPassable()) ||
-		getBottomNeighbour()->isEnd())
+	if (conditionToPushInPassableNeighbours(getBottomNeighbour()))
 		neighbours.push(getBottomNeighbour());
 }

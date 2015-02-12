@@ -73,6 +73,9 @@ private:
 	// initializes all bool statuses to false
 	void initStatusesToFalse();
 
+	bool conditionToPushInPassableNeighbours(const Cell* neighbour) const;
+
+
 public:
 
 	// the default ctor

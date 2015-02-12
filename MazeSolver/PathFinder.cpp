@@ -66,12 +66,12 @@ bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path)
 			if (neighbour->isInClosedList())
 				continue;
 
-			size_t neighbourGCost = current->getGCost() + 1;
+			size_t neighbourNextGCost = current->getGCost() + 1;
 
-			if (!neighbour->isInOpenedList() || neighbourGCost < neighbour->getGCost())
+			if (!neighbour->isInOpenedList() || neighbourNextGCost < neighbour->getGCost())
 			{
 				neighbour->setParent(current);
-				neighbour->setGCost(neighbourGCost);
+				neighbour->setGCost(neighbourNextGCost);
 				if (!neighbour->isInOpenedList())
 				{
 					neighbour->setInOpenedListStatus(true);
