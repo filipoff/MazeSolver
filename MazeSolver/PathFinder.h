@@ -11,7 +11,8 @@ class PathFinder
 private:
 
 	static void calculateHCostOf(Cell* current, const Cell* end);
-
+	
+	static void resetOpenedAndClosedLists(std::list<Cell*>& openedCellsList, std::list<Cell*>& closedCellsList);
 	
 	// static void trimPath(std::list<Cell*>& path);
 

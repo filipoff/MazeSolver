@@ -12,6 +12,19 @@ void PathFinder::calculateHCostOf(Cell* current, const Cell* end)
 
 
 
+void PathFinder::resetOpenedAndClosedLists(std::list<Cell*>& openedCellsList, std::list<Cell*>& closedCellsList)
+{
+	for (std::list<Cell*>::iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
+	{
+		(*it)->setInOpenedListStatus(false);
+	}
+
+	for (std::list<Cell*>::iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
+	{
+		(*it)->setInClosedListStatus(false);
+	}
+}
+
 bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 {
 	std::list<Cell*> openedCellsList;
@@ -48,16 +61,8 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 				current = current->getParent();
 			}
 
-			for (std::list<Cell*>::iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
-			{
-				(*it)->setInOpenedListStatus(false);
-			}
-
-			for (std::list<Cell*>::iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
-			{
-				(*it)->setInClosedListStatus(false);
-			}
-
+			resetOpenedAndClosedLists(openedCellsList, closedCellsList);
+			
 			return true;
 		}
 
@@ -94,16 +99,7 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 
 	}
 
-	for (std::list<Cell*>::iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
-	{
-		(*it)->setInOpenedListStatus(false);
-	}
-
-	for (std::list<Cell*>::iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
-	{
-		(*it)->setInClosedListStatus(false);
-	}
-
+	resetOpenedAndClosedLists(openedCellsList, closedCellsList);
 
 	return false;
 }
@@ -115,12 +111,12 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list<Cell*> &path)
 {
 	std::queue<Cell*> DoorsAndKeysFound;
-	std::list<Cell*> finalPath;
+	std::list<Cell*> pathSequence;
 	std::list<Cell*> realFinalPath;
 
 
 
-	finalPath.push_back(end);
+	pathSequence.push_back(end);
 	DoorsAndKeysFound.push(end);
 
 	while (!DoorsAndKeysFound.empty())
@@ -138,7 +134,7 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list
 			{
 				if ((*it)->isDoor())
 				{
-					finalPath.push_back(*it);
+					pathSequence.push_back(*it);
 					DoorsAndKeysFound.push(*it);
 				}
 			}
@@ -154,19 +150,19 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list
 					break;
 				}
 			}
-			finalPath.push_back(key);
+			pathSequence.push_back(key);
 			DoorsAndKeysFound.push(key);
 		}
 	}
 
-	finalPath.push_back(start);
+	pathSequence.push_back(start);
 	//	trimPath(finalPath);
 
-	for (std::list<Cell*>::reverse_iterator it = finalPath.rbegin(); it != finalPath.rend(); ++it)
+	for (std::list<Cell*>::reverse_iterator it = pathSequence.rbegin(); it != pathSequence.rend(); ++it)
 	{
 		std::list<Cell*>::reverse_iterator it2 = it;
 		++it2;
-		if (it2 == finalPath.rend())
+		if (it2 == pathSequence.rend())
 			break;
 		Cell* tempStart = *it;
 		Cell* tempEnd = *it2;

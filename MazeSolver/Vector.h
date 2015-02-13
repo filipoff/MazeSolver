@@ -30,6 +30,7 @@ public:
 	size_t getSize() const;
 	size_t getCapacity() const;
 	bool isEmpty() const;
+	bool contains(const T& element) const;
 	const T& operator[](size_t index) const;
 	T& operator[](size_t index);
 	void removeAt(size_t index);
@@ -173,4 +174,15 @@ void Vector<T>::removeAt(size_t index)
 		data[i] = data[i + 1];
 	}
 	size--;
+}
+
+template <class T>
+bool Vector<T>::contains(const T& element) const
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		if (data[i] == element)
+			return true;
+	}
+	return false;
 }
