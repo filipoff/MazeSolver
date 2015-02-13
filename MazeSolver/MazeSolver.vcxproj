@@ -78,7 +78,6 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="LockPair.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="Utilities.cpp" />

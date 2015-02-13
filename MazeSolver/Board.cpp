@@ -172,11 +172,11 @@ void Board::setBoardFromFile(std::istream &in)
 			if (c == '\n')
 				continue;
 			board[i][j] = Cell(this, c, i, j);
-			setLockPairsPositions(c, i, j);
+			setLockPairsCells(c, &board[i][j]);
 		}
 }
 
-void Board::setLockPairsPositions(const char c, const size_t rowPosition, const size_t columnPosition)
+void Board::setLockPairsCells(const char c, Cell* cell)
 {
 	if (c == constants::PASSABLE || c == constants::WALL
 		|| c == constants::START || c == constants::END)
@@ -188,14 +188,14 @@ void Board::setLockPairsPositions(const char c, const size_t rowPosition, const 
 		// TODO must check if key or door has already been set
 		if (lockPairs[i].getKeySymbol() == c)
 		{
-			lockPairs[i].setKeyPosition(rowPosition, columnPosition);
-			board[rowPosition][columnPosition].setKeyStatus(true);
+			cell->setKeyStatus(true);
+			lockPairs[i].setKeyCell(cell);	
 			return;
 		}
 		if (lockPairs[i].getDoorSymbol() == c)
 		{
-			lockPairs[i].setDoorPosition(rowPosition, columnPosition);
-			board[rowPosition][columnPosition].setDoorStatus(true);
+			cell->setDoorStatus(true);
+			lockPairs[i].setDoorCell(cell);
 			return;
 		}
 	}
@@ -267,5 +267,6 @@ Cell* Board::getEndCell() const
 
 Vector<LockPair> Board::getLockPairs() const
 {
+	// TODO Check if it has to be reference
 	return lockPairs;
 }

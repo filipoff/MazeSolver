@@ -97,6 +97,7 @@ public:
 	void clear();
 	void removeAt(Iterator& iter);
 	void remove(const T& element);
+	void insertAfter(Iterator& iter, const T& element);
 	Iterator begin();
 	Iterator end();
 };
@@ -111,32 +112,21 @@ bool List<T>::isEmpty() const
 template <class T>
 void List<T>::copyFrom(const List<T>& other)
 {
-	if (!other.isEmpty())
+	Node<T>* pointer = other.first;
+	while (pointer)
 	{
-		first = last = new Node<T>(other.first->data);
-		size++;
-		Node<T>* pointer = other.first;
-		while (pointer->next)
-		{
-			pointer = pointer->next;
-			push_back(pointer->data);
-		}
+		push_back(pointer->data);
+		pointer = pointer->next;	
 	}
 }
 
 
 template <class T>
-List<T>::List()
-{
-	first = last = NULL;
-	size = 0;
-}
+List<T>::List() : first(NULL), last(NULL), size(0) {}
 
 template <class T>
-List<T>::List(const List<T>& other)
+List<T>::List(const List<T>& other) : first(NULL), last(NULL), size(0)
 {
-	first = last = NULL;
-	size = 0;
 	copyFrom(other);
 }
 
@@ -150,7 +140,7 @@ template <class T>
 List<T>& List<T>::operator=(const List<T>& other)
 {
 	if (this != &other)
-	{ 
+	{
 		clear();
 		copyFrom(other);
 	}

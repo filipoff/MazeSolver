@@ -1,32 +1,25 @@
 #pragma once
 #include "Utilities.h"
+#include "Cell.h"
 
-struct Key
-{
-	char symbol;
-	Position pos;
-};
-
-struct Door
-{
-	char symbol;
-	Position pos;
-};
 
 class LockPair
 {
 
 private:
-	Key key;
-	Door door;
+	Cell* key;
+	Cell* door;
+	char keySymbol;
+	char doorSymbol;
 
 public:
-	char getKeySymbol() const;
-	char getDoorSymbol() const;
-	Position getKeyPosition() const;
-	Position getDoorPosition() const;
-	void setKeyPosition(const size_t rowPosition, const size_t columnPosition);
-	void setDoorPosition(const size_t rowPosition, const size_t columnPosition);
-	void setKeySymbol(const char symbol);
-	void setDoorSymbol(const char symbol);
+	LockPair() : key(NULL), door(NULL), keySymbol(0), doorSymbol(0) {}
+	Cell* getKeyCell() const { return key; }
+	Cell* getDoorCell() const { return door; }
+	void setKeyCell(Cell* cell) { key = cell; }
+	void setDoorCell(Cell* cell) { door = cell; }
+	char getKeySymbol() const { return keySymbol; }
+	char getDoorSymbol() const { return doorSymbol; }
+	void setKeySymbol(const char symbol) { keySymbol = symbol; }
+	void setDoorSymbol(const char symbol) { doorSymbol = symbol; }
 };

@@ -1,8 +1,10 @@
 #pragma once
 #include "Cell.h"
-#include "List.h"
+#include <list>
 #include "Vector.h"
+#include "List.h"
 #include <algorithm>
+#include <queue>
 
 class PathFinder
 {
@@ -10,6 +12,11 @@ private:
 
 	static void calculateHCostOf(Cell* current, const Cell* end);
 
+	
+	// static void trimPath(std::list<Cell*>& path);
+
 public:
-	static bool findPath(Cell* start, Cell* end, List<Cell*> &path);
+	static bool findPath(Cell* start, Cell* end, std::list<Cell*> &path);
+	
+	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list<Cell*> &path);
 };

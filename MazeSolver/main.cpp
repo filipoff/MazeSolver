@@ -14,10 +14,10 @@ int main()
 	test.print();
 	
 
-	List<Cell*> path;
+	std::list<Cell*> path;
 	Cell* start = test.getStartCell();
 	Cell* end = test.getEndCell();
-	PathFinder::findPath(start, end, path);
+	PathFinder::algo(start, end, test.getLockPairs(), path);
 	test.print();
 	
 

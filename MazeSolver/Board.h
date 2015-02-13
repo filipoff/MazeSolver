@@ -44,7 +44,7 @@ private:
 
 	bool setLockPairsFromFile(std::istream &in);
 
-	void setLockPairsPositions(const char c, const size_t rowPosition, const size_t columnPosition);
+	void setLockPairsCells(const char c, Cell* cell);
 public:
 	// the default constructor of the class
 	Board();
@@ -74,6 +74,7 @@ public:
 	Cell* getCellAt(size_t row, size_t column) const;
 
 	Cell* getStartCell() const;
+
 	Cell* getEndCell() const;
 
 	Vector<LockPair> getLockPairs() const;
