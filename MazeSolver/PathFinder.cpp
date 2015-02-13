@@ -17,15 +17,17 @@ void PathFinder::resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Ce
 	for (List<Cell*>::Iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
 	{
 		(*it)->setInOpenedListStatus(false);
+		(*it)->setParent(NULL);
 	}
 
 	for (List<Cell*>::Iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
 	{
 		(*it)->setInClosedListStatus(false);
+		(*it)->setParent(NULL);
 	}
 }
 
-bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path)
+bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustClearPath)
 {
 	List<Cell*> openedCellsList;
 	List<Cell*> closedCellsList;
@@ -53,7 +55,8 @@ bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path)
 
 		if (current == end)
 		{
-			path.clear();
+			if (mustClearPath)
+				path.clear();
 			while (current)
 			{
 				path.push_front(current);
@@ -112,7 +115,7 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell
 {
 	std::queue<Cell*> DoorsAndKeysFound;
 	List<Cell*> pathSequence;
-	List<Cell*> realFinalPath;
+	List<Cell*> finalPath;
 
 
 
@@ -127,7 +130,7 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell
 		if (temp->isKey() || temp->isEnd())
 		{
 			List<Cell*> tempPath;
-			if (!findPath(start, temp, tempPath))
+			if (!findPath(start, temp, tempPath, true))
 				return false;
 
 			for (List<Cell*>::Reverse_Iterator it = tempPath.rbegin(); it != tempPath.rend(); ++it)
@@ -167,9 +170,13 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell
 		Cell* tempStart = *it;
 		Cell* tempEnd = *it2;
 
-		findPath(tempStart, tempEnd, realFinalPath);
+		findPath(tempStart, tempEnd, finalPath, false);
 	}
 
+	for (List<Cell*>::Iterator it = finalPath.begin(); it != finalPath.end(); ++it)
+	{
+		(*it)->setSymbol('+');
+	}
 
 	return true;
 }
@@ -179,7 +186,7 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell
 void PathFinder::trimPath(List<Cell*>& path)
 {
 	Vector<Cell*> keys;
-
+	Vector<Cell*> doors;
 	for (List<Cell*>::Reverse_Iterator it = path.rbegin(); it != path.rend();)
 	{
 		if ((*it)->isKey())
@@ -187,11 +194,26 @@ void PathFinder::trimPath(List<Cell*>& path)
 			if (keys.contains(*it))
 			{
 				path.removeAt(it);
+				++it;
 				continue;
 			}
 			else
 			{
 				keys.push(*it);
+			}
+		}
+
+		else if ((*it)->isDoor())
+		{
+			if (doors.contains(*it))
+			{
+				path.removeAt(it);
+				++it;
+				continue;
+			}
+			else
+			{
+				doors.push(*it);
 			}
 		}
 		++it;

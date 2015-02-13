@@ -15,8 +15,8 @@ private:
 	
 	static void trimPath(List<Cell*>& path);
 
+	static bool findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustClearPath);
 public:
-	static bool findPath(Cell* start, Cell* end, List<Cell*> &path);
 	
 	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell*> &path);
 };
