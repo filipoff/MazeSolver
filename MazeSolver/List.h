@@ -85,6 +85,24 @@ public:
 		T& operator*();
 	};
 
+	class Reverse_Iterator
+	{
+
+	private:
+		Node<T>* element;
+		Reverse_Iterator(Node<T>* element);
+		friend class List < T >;
+	public:
+		bool operator==(const Reverse_Iterator& other) const;
+		bool operator!=(const Reverse_Iterator& other) const;
+		typename const List<T>::Reverse_Iterator& operator++() const;
+		typename List<T>::Reverse_Iterator& operator++();
+		typename const List<T>::Reverse_Iterator& operator--() const;
+		typename List<T>::Reverse_Iterator& operator--();
+		const T& operator*() const;
+		T& operator*();
+	};
+
 public:
 	bool isEmpty() const;
 	void push_back(const T& element);
@@ -96,10 +114,13 @@ public:
 	size_t getSize() const { return size; }
 	void clear();
 	void removeAt(Iterator& iter);
+	void removeAt(Reverse_Iterator& iter);
 	void remove(const T& element);
-	void insertAfter(Iterator& iter, const T& element);
 	Iterator begin();
 	Iterator end();
+	Reverse_Iterator rbegin();
+	Reverse_Iterator rend();
+	
 };
 
 
@@ -285,6 +306,38 @@ void List<T>::removeAt(Iterator& iter)
 	}
 }
 
+
+template <class T>
+void List<T>::removeAt(Reverse_Iterator& iter)
+{
+	if (isEmpty())
+	{
+		throw std::out_of_range("called removeAt when list is empty!");
+	}
+	if (iter.element == first)
+	{
+		--iter;
+		pop_front();
+	}
+	else if (iter.element == last)
+	{
+		++iter;
+		pop_back();
+		--iter;
+	}
+	else
+	{
+		Node<T>* pointer = iter.element;
+		--iter;
+		pointer->next->previous = pointer->previous;
+		pointer->previous->next = pointer->next;
+		pointer->next = pointer->previous = NULL;
+		delete pointer;
+		size--;
+	}
+}
+
+
 template <class T>
 void List<T>::remove(const T& element)
 {
@@ -383,6 +436,81 @@ typename List<T>::Iterator List<T>::end()
 	if (!last)
 		return  Iterator(NULL);
 	return Iterator(last->next);
+}
+
+
+
+template <class T>
+List<T>::Reverse_Iterator::Reverse_Iterator(Node<T>* element) : element(element) {}
+
+template <class T>
+bool List<T>::Reverse_Iterator::operator==(const Reverse_Iterator& other) const
+{
+	return element == other.element;
+}
+
+template <class T>
+bool List<T>::Reverse_Iterator::operator!=(const Reverse_Iterator& other) const
+{
+	return element != other.element;
+}
+
+template <class T>
+typename const List<T>::Reverse_Iterator& List<T>::Reverse_Iterator::operator++() const
+{
+	if (element)
+		element = element->previous;
+	return *this;
+}
+
+template <class T>
+typename List<T>::Reverse_Iterator& List<T>::Reverse_Iterator::operator++()
+{
+	if (element)
+		element = element->previous;
+	return *this;
+}
+
+template <class T>
+typename const List<T>::Reverse_Iterator& List<T>::Reverse_Iterator::operator--() const
+{
+	if (element)
+		element = element->next;
+	return *this;
+}
+
+template <class T>
+typename List<T>::Reverse_Iterator& List<T>::Reverse_Iterator::operator--()
+{
+	if (element)
+		element = element->next;
+	return *this;
+}
+
+template <class T>
+const T& List<T>::Reverse_Iterator::operator*() const
+{
+	return element->data;
+}
+
+template <class T>
+T& List<T>::Reverse_Iterator::operator*()
+{
+	return element->data;
+}
+
+template <class T>
+typename List<T>::Reverse_Iterator List<T>::rbegin()
+{
+	return Reverse_Iterator(last);
+}
+
+template <class T>
+typename List<T>::Reverse_Iterator List<T>::rend()
+{
+	if (!first)
+		return  Reverse_Iterator(NULL);
+	return Reverse_Iterator(first->previous);
 }
 
 

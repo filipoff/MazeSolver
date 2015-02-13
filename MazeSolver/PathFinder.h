@@ -1,6 +1,5 @@
 #pragma once
 #include "Cell.h"
-#include <list>
 #include "Vector.h"
 #include "List.h"
 #include <algorithm>
@@ -12,12 +11,12 @@ private:
 
 	static void calculateHCostOf(Cell* current, const Cell* end);
 	
-	static void resetOpenedAndClosedLists(std::list<Cell*>& openedCellsList, std::list<Cell*>& closedCellsList);
+	static void resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList);
 	
-	// static void trimPath(std::list<Cell*>& path);
+	static void trimPath(List<Cell*>& path);
 
 public:
-	static bool findPath(Cell* start, Cell* end, std::list<Cell*> &path);
+	static bool findPath(Cell* start, Cell* end, List<Cell*> &path);
 	
-	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list<Cell*> &path);
+	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell*> &path);
 };

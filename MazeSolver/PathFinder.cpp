@@ -12,23 +12,23 @@ void PathFinder::calculateHCostOf(Cell* current, const Cell* end)
 
 
 
-void PathFinder::resetOpenedAndClosedLists(std::list<Cell*>& openedCellsList, std::list<Cell*>& closedCellsList)
+void PathFinder::resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList)
 {
-	for (std::list<Cell*>::iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
+	for (List<Cell*>::Iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
 	{
 		(*it)->setInOpenedListStatus(false);
 	}
 
-	for (std::list<Cell*>::iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
+	for (List<Cell*>::Iterator it = closedCellsList.begin(); it != closedCellsList.end(); ++it)
 	{
 		(*it)->setInClosedListStatus(false);
 	}
 }
 
-bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
+bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path)
 {
-	std::list<Cell*> openedCellsList;
-	std::list<Cell*> closedCellsList;
+	List<Cell*> openedCellsList;
+	List<Cell*> closedCellsList;
 	Cell* current;
 
 	calculateHCostOf(start, end);
@@ -39,11 +39,11 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 
 	current = start;
 
-	while (!openedCellsList.empty())
+	while (!openedCellsList.isEmpty())
 	{
-		current = openedCellsList.front();
+		current = openedCellsList.peek_front();
 
-		for (std::list<Cell*>::iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
+		for (List<Cell*>::Iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
 		{
 			if ((*it)->getFCost() <= current->getFCost())
 			{
@@ -62,7 +62,7 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 			}
 
 			resetOpenedAndClosedLists(openedCellsList, closedCellsList);
-			
+
 			return true;
 		}
 
@@ -108,11 +108,11 @@ bool PathFinder::findPath(Cell* start, Cell* end, std::list<Cell*> &path)
 
 
 
-bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list<Cell*> &path)
+bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell*> &path)
 {
 	std::queue<Cell*> DoorsAndKeysFound;
-	std::list<Cell*> pathSequence;
-	std::list<Cell*> realFinalPath;
+	List<Cell*> pathSequence;
+	List<Cell*> realFinalPath;
 
 
 
@@ -126,11 +126,11 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list
 
 		if (temp->isKey() || temp->isEnd())
 		{
-			std::list<Cell*> tempPath;
+			List<Cell*> tempPath;
 			if (!findPath(start, temp, tempPath))
 				return false;
 
-			for (std::list<Cell*>::reverse_iterator it = tempPath.rbegin(); it != tempPath.rend(); ++it)
+			for (List<Cell*>::Reverse_Iterator it = tempPath.rbegin(); it != tempPath.rend(); ++it)
 			{
 				if ((*it)->isDoor())
 				{
@@ -156,11 +156,11 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list
 	}
 
 	pathSequence.push_back(start);
-	//	trimPath(finalPath);
+	trimPath(pathSequence);
 
-	for (std::list<Cell*>::reverse_iterator it = pathSequence.rbegin(); it != pathSequence.rend(); ++it)
+	for (List<Cell*>::Reverse_Iterator it = pathSequence.rbegin(); it != pathSequence.rend(); ++it)
 	{
-		std::list<Cell*>::reverse_iterator it2 = it;
+		List<Cell*>::Reverse_Iterator it2 = it;
 		++it2;
 		if (it2 == pathSequence.rend())
 			break;
@@ -174,29 +174,28 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, std::list
 	return true;
 }
 
-/*
-void PathFinder::trimPath(std::list<Cell*>& path)
-{
-Vector<Cell*> keys;
-// TODO Vector contains
 
-for (std::list<Cell*>::reverse_iterator it = path.rbegin(); it != path.rend();)
+
+void PathFinder::trimPath(List<Cell*>& path)
 {
-if ((*it)->isKey())
-{
-if (keys.contains(*it))
-{
-it = path.erase(it);
-continue;
-}
-else
-{
-keys.push(*it);
-}
-}
-++it;
-}
+	Vector<Cell*> keys;
+
+	for (List<Cell*>::Reverse_Iterator it = path.rbegin(); it != path.rend();)
+	{
+		if ((*it)->isKey())
+		{
+			if (keys.contains(*it))
+			{
+				path.removeAt(it);
+				continue;
+			}
+			else
+			{
+				keys.push(*it);
+			}
+		}
+		++it;
+	}
 
 }
 
-*/
