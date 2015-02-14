@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "List.h"
 #include <algorithm>
+#include "Board.h"
 #include <queue>
 
 class PathFinder
@@ -11,12 +12,22 @@ private:
 
 	static void calculateHCostOf(Cell* current, const Cell* end);
 	
-	static void resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList);
+	static void resetPathCells(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList);
 	
-	static void trimPath(List<Cell*>& path);
+	static void trimPathFromDublicatedKeys(List<Cell*>& path);
 
-	static bool findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustClearPath);
+	static bool findPath(Cell* start, Cell* end, List<Cell*>& path);
+
+
+	// must be const but i need const iterators
+	static const char* convertPathToString(List<Cell*>& path);
+	
+	// must be const but i need const iterators
+	static void addToFinalPath(List<Cell*>& finalPath, List<Cell*>& path);
+
 public:
 	
-	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell*> &path);
+	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, const char* pathString);
+	
+	static void setPathWithSymbol(List<Cell*>& path, char pathSymbol);
 };

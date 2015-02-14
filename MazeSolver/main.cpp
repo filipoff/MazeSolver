@@ -10,16 +10,12 @@ int main()
 	Board test;
 	test.loadFromFileName("testMap.txt");
 	test.print();
-	
-
-	List<Cell*> path;
+	const char* pathString = NULL;
 	Cell* start = test.getStartCell();
 	Cell* end = test.getEndCell();
-	PathFinder::algo(start, end, test.getLockPairs(), path);
-	test.print();
-	
-
-
-
+	if (PathFinder::algo(start, end, test.getLockPairs(), pathString))
+		test.print();
+	else
+		cout << "No path exists!" << endl;
 	return 0;
 }

@@ -12,7 +12,7 @@ void PathFinder::calculateHCostOf(Cell* current, const Cell* end)
 
 
 
-void PathFinder::resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList)
+void PathFinder::resetPathCells(List<Cell*>& openedCellsList, List<Cell*>& closedCellsList)
 {
 	for (List<Cell*>::Iterator it = openedCellsList.begin(); it != openedCellsList.end(); ++it)
 	{
@@ -27,8 +27,14 @@ void PathFinder::resetOpenedAndClosedLists(List<Cell*>& openedCellsList, List<Ce
 	}
 }
 
-bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustClearPath)
+bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*>& path)
 {
+
+	if (start == end)
+	{
+		return true;
+	}
+
 	List<Cell*> openedCellsList;
 	List<Cell*> closedCellsList;
 	Cell* current;
@@ -55,16 +61,14 @@ bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustCl
 
 		if (current == end)
 		{
-			if (mustClearPath)
-				path.clear();
+			path.clear();
 			while (current)
 			{
 				path.push_front(current);
-				//current->setSymbol('+');
 				current = current->getParent();
 			}
 
-			resetOpenedAndClosedLists(openedCellsList, closedCellsList);
+			resetPathCells(openedCellsList, closedCellsList);
 
 			return true;
 		}
@@ -102,43 +106,52 @@ bool PathFinder::findPath(Cell* start, Cell* end, List<Cell*> &path, bool mustCl
 
 	}
 
-	resetOpenedAndClosedLists(openedCellsList, closedCellsList);
+	resetPathCells(openedCellsList, closedCellsList);
 
 	return false;
 }
 
 
-
-
-
-bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell*> &path)
+void PathFinder::addToFinalPath(List<Cell*>& finalPath, List<Cell*>& path)
 {
-	std::queue<Cell*> DoorsAndKeysFound;
-	List<Cell*> pathSequence;
+	// to remove the dublicating start
+	if (path.peek_front()->getSymbol() != constants::START)
+		path.pop_front();
+
+	for (List<Cell*>::Iterator it = path.begin(); it != path.end(); ++it)
+	{
+		finalPath.push_back(*it);
+	}
+}
+
+
+bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, const char* pathString)
+{
+	// can be queue
+	List<Cell*> DoorsAndKeysFound;
+
+	List<Cell*> ReversedPathSequence;
 	List<Cell*> finalPath;
 
+	ReversedPathSequence.push_back(end);
+	DoorsAndKeysFound.push_back(end);
 
-
-	pathSequence.push_back(end);
-	DoorsAndKeysFound.push(end);
-
-	while (!DoorsAndKeysFound.empty())
+	while (!DoorsAndKeysFound.isEmpty())
 	{
-		Cell* temp = DoorsAndKeysFound.front();
-		DoorsAndKeysFound.pop();
+		Cell* temp = DoorsAndKeysFound.pop_front();
 
 		if (temp->isKey() || temp->isEnd())
 		{
 			List<Cell*> tempPath;
-			if (!findPath(start, temp, tempPath, true))
+			if (!findPath(start, temp, tempPath))
 				return false;
 
 			for (List<Cell*>::Reverse_Iterator it = tempPath.rbegin(); it != tempPath.rend(); ++it)
 			{
 				if ((*it)->isDoor())
 				{
-					pathSequence.push_back(*it);
-					DoorsAndKeysFound.push(*it);
+					ReversedPathSequence.push_back(*it);
+					DoorsAndKeysFound.push_back(*it);
 				}
 			}
 		}
@@ -153,40 +166,41 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, List<Cell
 					break;
 				}
 			}
-			pathSequence.push_back(key);
-			DoorsAndKeysFound.push(key);
+			ReversedPathSequence.push_back(key);
+			DoorsAndKeysFound.push_back(key);
 		}
 	}
 
-	pathSequence.push_back(start);
-	trimPath(pathSequence);
+	ReversedPathSequence.push_back(start);
+	trimPathFromDublicatedKeys(ReversedPathSequence);
 
-	for (List<Cell*>::Reverse_Iterator it = pathSequence.rbegin(); it != pathSequence.rend(); ++it)
+	for (List<Cell*>::Reverse_Iterator it = ReversedPathSequence.rbegin();
+		it != ReversedPathSequence.rend(); ++it)
 	{
+		List<Cell*> pathBetweenTwoPoints;
 		List<Cell*>::Reverse_Iterator it2 = it;
 		++it2;
-		if (it2 == pathSequence.rend())
+		if (it2 == ReversedPathSequence.rend())
 			break;
 		Cell* tempStart = *it;
 		Cell* tempEnd = *it2;
 
-		findPath(tempStart, tempEnd, finalPath, false);
+		findPath(tempStart, tempEnd, pathBetweenTwoPoints);
+		if (pathBetweenTwoPoints.getSize() > 0)
+			addToFinalPath(finalPath, pathBetweenTwoPoints);
 	}
 
-	for (List<Cell*>::Iterator it = finalPath.begin(); it != finalPath.end(); ++it)
-	{
-		(*it)->setSymbol('+');
-	}
-
+	pathString = convertPathToString(finalPath);
+	setPathWithSymbol(finalPath, '+');
 	return true;
 }
 
 
 
-void PathFinder::trimPath(List<Cell*>& path)
+void PathFinder::trimPathFromDublicatedKeys(List<Cell*>& path)
 {
 	Vector<Cell*> keys;
-	Vector<Cell*> doors;
+
 	for (List<Cell*>::Reverse_Iterator it = path.rbegin(); it != path.rend();)
 	{
 		if ((*it)->isKey())
@@ -203,21 +217,59 @@ void PathFinder::trimPath(List<Cell*>& path)
 			}
 		}
 
-		else if ((*it)->isDoor())
-		{
-			if (doors.contains(*it))
-			{
-				path.removeAt(it);
-				++it;
-				continue;
-			}
-			else
-			{
-				doors.push(*it);
-			}
-		}
 		++it;
 	}
 
 }
 
+
+
+
+const char* PathFinder::convertPathToString(List<Cell*>& path)
+{
+	Vector<char> directionSequence;
+	Cell* current;
+	Cell* next;
+
+	for (List<Cell*>::Iterator it = path.begin(); it != path.end(); ++it)
+	{
+		List<Cell*>::Iterator it2 = it;
+		++it2;
+		if (it2 == path.end())
+			break;
+		current = *it;
+		next = *it2;
+		if (current->getPosition().nextPositionIsLeft(next->getPosition()))
+			directionSequence.push('L');
+		else if (current->getPosition().nextPositionIsRight(next->getPosition()))
+			directionSequence.push('R');
+		else if (current->getPosition().nextPositionIsUpper(next->getPosition()))
+			directionSequence.push('U');
+		else if (current->getPosition().nextPositionIsDown(next->getPosition()))
+			directionSequence.push('D');
+	}
+
+	char* pathString = new char[directionSequence.getSize() + 1];
+
+	size_t size = directionSequence.getSize();
+	for (size_t i = 0; i < size; i++)
+	{
+		pathString[i] = directionSequence[i];
+	}
+	pathString[size] = '\0';
+
+	return pathString;
+}
+
+void PathFinder::setPathWithSymbol(List<Cell*>& path, char pathSymbol)
+{
+
+	for (List<Cell*>::Iterator it = path.begin(); it != path.end(); ++it)
+	{
+		if ((*it)->getSymbol() == constants::START)
+			continue;
+		if ((*it)->getSymbol() == constants::END)
+			break;
+		(*it)->setSymbol(pathSymbol);
+	}
+}

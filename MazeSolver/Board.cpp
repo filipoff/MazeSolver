@@ -232,6 +232,7 @@ void Board::print() const
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 Cell* Board::getCellAt(size_t row, size_t column) const
