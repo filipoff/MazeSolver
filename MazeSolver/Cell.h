@@ -73,6 +73,7 @@ private:
 	// initializes all bool statuses to false
 	void initStatusesToFalse();
 
+	// checks if a neighbour cell is valid cell for path-finding
 	bool conditionToPushInPassableNeighbours(const Cell* neighbour) const;
 
 
@@ -172,6 +173,6 @@ public:
 	void setInClosedListStatus(bool status) { isInClosedListStatus = status; }
 
 	// fills the vector that is passed as parameter with neighbours of the cell
-	// only if the are passable cells
+	// only if they are valid cells for the path-finding algorithm
 	void getPassableNeighbours(Vector<Cell*> &neighbours) const;
 };

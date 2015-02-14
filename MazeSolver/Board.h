@@ -37,14 +37,19 @@ private:
 	// a help fuction that is used in the readFromFileName method for loading a board from text file
 	// by reading the file line be line, allocating memory for the board and copying
 	// the text from the file into the board array
-	// TODO : fix documentation
 	void setBoardFromFile(std::istream &in);
 
+	// gets the size of the board by reading the board file
 	bool getBoardSizeFromFile(std::istream &in, size_t& newHeight, size_t& newWidth) const;
 
+	// sets the keys and doors pairs by reading the board file
 	bool setLockPairsFromFile(std::istream &in);
 
+	// finds whichs cells are part of the lock pairs
+	// sets pointer to the cell and sets its symbol
+	// also sets its status if its a key or a door
 	void setLockPairsCells(const char c, Cell* cell);
+
 public:
 	// the default constructor of the class
 	Board();
@@ -73,10 +78,14 @@ public:
 	// gets cell at given position
 	Cell* getCellAt(size_t row, size_t column) const;
 
+	// gets the start cell
 	Cell* getStartCell() const;
 
+	// gets the end cell
 	Cell* getEndCell() const;
 
+	// gets the lock pairs of keys and doors
+	// used by the path-finding algorithm
 	Vector<LockPair> getLockPairs() const;
 
 };
