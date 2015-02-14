@@ -37,7 +37,7 @@ private:
 	// a function that converts a given list of cell to a string with
 	// directions (U,D,R,L)
 	// must be const but i need const iterators
-	static const char* convertPathToString(List<Cell*>& path);
+	static void convertPathToString(List<Cell*>& path, Vector<char>& directionSequence);
 	
 	// a function that adds to the final path other intermediate paths
 	// must be const but i need const iterators
@@ -51,9 +51,9 @@ public:
 	// and determines which keys have to be taken
 	// and which doors have to be unlocked in order to
 	// go from the start cell to the end cell
-	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, const char* pathString);
+	static bool algo(Cell* start, Cell* end, Vector<LockPair>& pairs, Vector<char>& pathString);
 	
 	// a method that sets the path's cells' symbol to a given symbol
-	// so the path can be printed in the console
+	// so  can be printed in the console
 	static void setPathWithSymbol(List<Cell*>& path, char pathSymbol);
 };

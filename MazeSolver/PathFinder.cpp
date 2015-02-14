@@ -196,7 +196,7 @@ void PathFinder::addToFinalPath(List<Cell*>& finalPath, List<Cell*>& path)
 }
 
 
-bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, const char* pathString)
+bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, Vector<char>& pathString)
 {
 	// can be queue
 	List<Cell*> DoorsAndKeysFound;
@@ -261,7 +261,7 @@ bool PathFinder::algo(Cell* start, Cell* end, Vector<LockPair>& pairs, const cha
 			addToFinalPath(finalPath, pathBetweenTwoPoints);
 	}
 
-	pathString = convertPathToString(finalPath);
+	convertPathToString(finalPath,pathString);
 	setPathWithSymbol(finalPath, '+');
 	return true;
 }
@@ -294,9 +294,8 @@ void PathFinder::trimPathFromDublicatedKeys(List<Cell*>& path)
 
 
 
-const char* PathFinder::convertPathToString(List<Cell*>& path)
+void PathFinder::convertPathToString(List<Cell*>& path, Vector<char>& directionSequence)
 {
-	Vector<char> directionSequence;
 	Cell* current;
 	Cell* next;
 
@@ -317,17 +316,6 @@ const char* PathFinder::convertPathToString(List<Cell*>& path)
 		else if (current->getPosition().nextPositionIsDown(next->getPosition()))
 			directionSequence.push('D');
 	}
-
-	char* pathString = new char[directionSequence.getSize() + 1];
-
-	size_t size = directionSequence.getSize();
-	for (size_t i = 0; i < size; i++)
-	{
-		pathString[i] = directionSequence[i];
-	}
-	pathString[size] = '\0';
-
-	return pathString;
 }
 
 void PathFinder::setPathWithSymbol(List<Cell*>& path, char pathSymbol)

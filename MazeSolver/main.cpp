@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Board.h"
 #include "PathFinder.h"
-#include "List.h"
 
 using namespace std;
 
@@ -10,7 +9,7 @@ int main()
 	Board test;
 	test.loadFromFileName("testMap.txt");
 	test.print();
-	const char* pathString = NULL;
+	Vector<char> pathString;
 	Cell* start = test.getStartCell();
 	Cell* end = test.getEndCell();
 	if (PathFinder::algo(start, end, test.getLockPairs(), pathString))
